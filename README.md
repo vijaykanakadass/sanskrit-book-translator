@@ -21,10 +21,10 @@ Upload Sanskrit book PDFs and get beautifully formatted English translations as 
 | ---------- | --------------------------------- |
 | Frontend   | React 19, Vite, JavaScript        |
 | Styling    | Tailwind CSS                      |
-| Backend    | Express, JavaScript               |
+| Backend    | FastAPI, Python                   |
 | Database   | Supabase (PostgreSQL)             |
 | Storage    | Supabase Storage (PDF files)      |
-| PDF Parse  | pdf-parse                         |
+| PDF Parse  | pdfplumber                        |
 | PDF Export | jspdf / @react-pdf/renderer       |
 
 ## Project Structure
@@ -35,9 +35,9 @@ Upload Sanskrit book PDFs and get beautifully formatted English translations as 
 │       ├── components/
 │       ├── pages/
 │       ├── lib/     # Supabase client, API helpers
-├── server/          # Express backend
-│   └── src/
-│       ├── routes/
+├── server/          # FastAPI backend (Python)
+│   └── app/
+│       ├── routers/
 │       ├── services/  # Translation service abstraction
 │       └── lib/       # Supabase admin client
 ├── .env.example
@@ -49,6 +49,7 @@ Upload Sanskrit book PDFs and get beautifully formatted English translations as 
 ### Prerequisites
 
 - Node.js 18+
+- Python 3.10+
 - A [Supabase](https://supabase.com) project (free tier works)
 
 ### Setup
@@ -71,21 +72,30 @@ Upload Sanskrit book PDFs and get beautifully formatted English translations as 
 3. **Install dependencies**
 
    ```bash
+   # Frontend
    cd client && npm install
-   cd ../server && npm install
+
+   # Backend
+   cd ../server
+   python -m venv venv
+   venv\Scripts\activate        # Windows
+   # source venv/bin/activate   # macOS/Linux
+   pip install -r requirements.txt
    ```
 
 4. **Start development servers**
 
    ```bash
    # Terminal 1 — backend
-   cd server && npm run dev
+   cd server
+   venv\Scripts\activate
+   uvicorn app.main:app --port 3001 --reload
 
    # Terminal 2 — frontend
    cd client && npm run dev
    ```
 
-   The frontend runs on `http://localhost:5173` and proxies API requests to the Express server on port `3001`.
+   The frontend runs on `http://localhost:5173` and proxies API requests to the FastAPI server on port `3001`.
 
 ## License
 
