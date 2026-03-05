@@ -1,9 +1,9 @@
 import { useState, useRef } from "react";
 import { uploadPdf } from "../lib/api";
 
-const MAX_SIZE_MB = 50;
+const MAX_SIZE_MB = 300;
 
-export default function PdfUploader() {
+export default function PdfUploader({ onJobStarted }) {
   const [status, setStatus] = useState("idle"); // idle | dragging | uploading | success | error
   const [result, setResult] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
@@ -33,6 +33,9 @@ export default function PdfUploader() {
       const data = await uploadPdf(file);
       setResult(data);
       setStatus("success");
+      if (data.job_id && onJobStarted) {
+        onJobStarted(data);
+      }
     } catch (e) {
       setStatus("error");
       setErrorMsg(e.message || "Something went wrong.");
@@ -65,28 +68,6 @@ export default function PdfUploader() {
     setStatus("idle");
     setResult(null);
     setErrorMsg("");
-  }
-
-  if (status === "success" && result) {
-    return (
-      <div className="rounded-2xl border border-green-200 bg-green-50 p-10 text-center">
-        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100">
-          <svg className="h-7 w-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-          </svg>
-        </div>
-        <p className="text-lg font-semibold text-green-800">Upload successful</p>
-        <p className="mt-2 text-sm text-green-700">
-          <span className="font-medium">{result.filename}</span> — {result.pages} page{result.pages !== 1 ? "s" : ""}, {(result.size / 1024).toFixed(0)} KB
-        </p>
-        <button
-          onClick={reset}
-          className="mt-6 rounded-lg bg-green-600 px-5 py-2 text-sm font-medium text-white hover:bg-green-700 transition-colors cursor-pointer"
-        >
-          Upload another
-        </button>
-      </div>
-    );
   }
 
   return (
