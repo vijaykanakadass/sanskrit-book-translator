@@ -9,7 +9,7 @@ Upload Sanskrit book PDFs and get beautifully formatted English translations as 
 > **Status: Early Development** — This project is actively being built. Features are being added incrementally.
 
 - [x] Project scaffolding (client + server)
-- [ ] PDF upload and text extraction
+- [x] PDF upload and text extraction
 - [ ] AI-powered Sanskrit to English translation
 - [ ] Rich web view with formatted translations
 - [ ] PDF export of translated content
