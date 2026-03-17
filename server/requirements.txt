@@ -5,3 +5,9 @@ supabase
 pdfplumber
 python-multipart
 sarvamai
+
+# Testing
+pytest
+pytest-asyncio
+httpx
+reportlab
